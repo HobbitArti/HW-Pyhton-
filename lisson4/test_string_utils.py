@@ -1,3 +1,5 @@
+#Исправленная
+
 import pytest
 
 from string_utils import StringUtils
@@ -31,7 +33,7 @@ def test_trim_negative(string, result):
     assert res == result
 
 #Принимает на вход текст с разделителем и возвращает список строк. \n
-@pytest.mark.parametrize("string, delimeter, result", [("a,b,c,d", ",", ["a", "b", "c", "d"]),("1:2:3:4", ":", ["1", "2", "3", "4"]), ("Hi Artem", ",", ["Hi", "Artem"])])
+@pytest.mark.parametrize("string, delimeter, result", [("a,b,c,d", ",", ["a", "b", "c", "d"]),("1:2:3:4", ":", ["1", "2", "3", "4"]), ("Привет Александр", ",", ["Привет", "Александр"])])
 def test_to_list_positive(string, delimeter, result):
    string_utils = StringUtils()
    res = string_utils.to_list(string, delimeter)
@@ -63,7 +65,7 @@ def test_delete_symbol_positive(string, symbol,result):
     string_utils = StringUtils()
     res = string_utils.delete_symbol(string,symbol)
     assert res == result
-    
+
 @pytest.mark.parametrize("string, symbol, result",[("SkyPro", "x", "SkyPro")])
 def test_delete_symbol_negative(string, symbol,result):
     string_utils = StringUtils()
@@ -110,7 +112,7 @@ def test_list_to_string_positive(lst, joiner, result):
     string_utils = StringUtils()
     res = string_utils.list_to_string(lst, joiner)
     assert res == result
- 
+
 @pytest.mark.parametrize("lst, joiner, result", [([], ", ", ""),([1], ", ", "1"),([1, 2, 3], "- ", "1-2-3"),(["Sky", "Pro"], "?", "Sky?Pro")])
 def test_list_to_string_negative(lst, joiner, result):
     string_utils = StringUtils()
