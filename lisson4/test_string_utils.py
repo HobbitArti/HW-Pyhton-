@@ -1,5 +1,3 @@
-#Исправленная
-
 import pytest
 
 from string_utils import StringUtils
@@ -33,7 +31,7 @@ def test_trim_negative(string, result):
     assert res == result
 
 #Принимает на вход текст с разделителем и возвращает список строк. \n
-@pytest.mark.parametrize("string, delimeter, result", [("a,b,c,d", ",", ["a", "b", "c", "d"]),("1:2:3:4", ":", ["1", "2", "3", "4"]), ("Привет Александр", ",", ["Привет", "Александр"])])
+@pytest.mark.parametrize("string, delimeter, result", [("a,b,c,d", ",", ["a", "b", "c", "d"]),("1:2:3:4", ":", ["1", "2", "3", "4"]), ("Привет Тонни", ",", ["Привет", "Тонни"])])
 def test_to_list_positive(string, delimeter, result):
    string_utils = StringUtils()
    res = string_utils.to_list(string, delimeter)
