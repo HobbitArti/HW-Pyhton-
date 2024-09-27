@@ -1,46 +1,60 @@
 import allure
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
-class PersonalDataPage:
+class InternetMagPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.driver.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
-        self.driver.implicitly_wait(4)
+        self.driver.get("https://www.saucedemo.com/")
+        self.driver.implicitly_wait(10)
         self.driver.maximize_window()
 
-    @allure.step("Заполнение формы с персональными данными")
-    def personal_data(self, name: str, last: str, address: str, email: str, phone: int, city: str, country: str, job: str, company: str):
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "first-name"]').send_keys(name)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "last-name"]').send_keys(last)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "address"]').send_keys(address)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "e-mail"]').send_keys(email)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "phone"]').send_keys(phone)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "zip-code"]').clear()
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "city"]').send_keys(city)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "country"]').send_keys(country)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "job-position"]').send_keys(job)
-        self.driver.find_element(By.CSS_SELECTOR, 'input[name = "company"]').send_keys(company)
+    @allure.step("Авторизация пользователя {name}:{password}")
+    def authorization(self, name = "standard_user", password = "secret_sauce"):
+        self.driver.find_element(By.CSS_SELECTOR, "#user-name").send_keys(name)
+        self.driver.find_element(By.CSS_SELECTOR, "#password").send_keys(password)
+        self.driver.find_element(By.CSS_SELECTOR, "#login-button").click()
 
-        button = self.driver.find_element(By.CSS_SELECTOR, 'button.btn')
-        ActionChains(self.driver).move_to_element(button).perform()
-        button.click()
+    @allure.step("Добавить товар в корзину")
+    def add_products(self):
+        self.driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-backpack").click()
+        self.driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-bolt-t-shirt").click()
+        self.driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-onesie").click()
+ 
+    @allure.step("Перейти в корзину интернет-магазина")
+    def go_to_cart(self):
+        self.driver.find_element(By.CSS_SELECTOR, 'a[data-test="shopping-cart-link"]').click()
+        self.driver.find_element(By.CSS_SELECTOR, "#checkout").click()
 
-    @allure.step("Вызов метода для определения,имеют ли поле ввода на красный цвет,если оно не заполнено")
-    def zip_code_red(self):
-        zip_code_color = self.driver.find_element(By.CSS_SELECTOR, "#zip-code").value_of_css_property("background-color")
-        return zip_code_color == 'rgba(248, 215, 218, 1)'
+    @allure.step("Ввод персональных данных пользователя")
+    def personal_data(self, name: str, last_name: str, index: int):
+        self.driver.find_element(By.CSS_SELECTOR, 'input[name="firstName"]').send_keys(name)
+        self.driver.find_element(By.CSS_SELECTOR, 'input[name="lastName"]').send_keys(last_name)
+        self.driver.find_element(By.CSS_SELECTOR, 'input[name="postalCode"]').send_keys(index)
+        self.driver.find_element(By.CSS_SELECTOR, 'input[name="continue"]').click()
 
-    @allure.step("Вызов метода для определения,имеют ли поля ввода на зеленый цвет,если они заполнены")
-    def other_fields_green(self):
-        other_fields = ["#first-name", "#last-name", "#address", "#e-mail",
-                        "#phone", "#city", "#country", "#job-position", "#company"]
-        for field in other_fields:
-            field_color = self.driver.find_element(By.CSS_SELECTOR, field).value_of_css_property("background-color")
-        return field_color == 'rgba(209, 231, 221, 1)'
+    @allure.step("Вызов метода для ожидания элемента в течение 10 секунд")
+    def total_cost(self):
+        txt = WebDriverWait(self.driver, "10").until(
+            EC.presence_of_element_located((By.CLASS_NAME, "summary_total_label"))).text
+        return txt
 
     @allure.step("Закрытия драйвера веб-браузера")
-    def close_driver(self):
+    def close(self):
+        self.driver.find_element(By.CSS_SELECTOR, "#finish").click()
         self.driver.quit()
+
+    def calculate_expected_total(self):
+        """
+        Calculates the expected total cost based on the prices of added products.
+        This method assumes the prices are displayed correctly on the product page.
+        """
+        product_prices = self.driver.find_elements(By.CSS_SELECTOR, ".inventory_item .pricebar")
+        total_cost = 0.0
+        for price_element in product_prices:
+            price_str = price_element.text.strip("$")  # Remove dollar sign and whitespace
+            total_cost += float(price_str)
+        return total_cost
