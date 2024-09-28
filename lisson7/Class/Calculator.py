@@ -7,17 +7,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 class CalculatorPage:
     def __init__(self, driver):
         self.driver = driver
-        self.driver.get("https://www.calculator.net/")  
+        self.driver.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")  
         self.driver.maximize_window()
 
     def delay(self, delay_seconds=45):
         self.driver.find_element(By.ID, "delay").send_keys(delay_seconds)
 
     def sum_of_the_numbers(self):
-        self.driver.find_element(By.CSS_SELECTOR, "#c5 > input").send_keys("5")
-        self.driver.find_element(By.CSS_SELECTOR, "#c5 > input").send_keys("+")
-        self.driver.find_element(By.CSS_SELECTOR, "#c5 > input").send_keys("5")
-        self.driver.find_element(By.CSS_SELECTOR, "#c5 > input").send_keys("=")
+        self._driver.find_element(By.XPATH, '//span[contains(text(),"7")]').click()
+        self._driver.find_element(By.XPATH, '//span[contains(text(),"+")]').click()
+        self._driver.find_element(By.XPATH, '//span[contains(text(),"8")]').click()
+        self._driver.find_element(By.XPATH, '//span[contains(text(),"=")]').click()
 
     def get_result(self):
         result_element = self.driver.find_element(By.ID, "sciOutPut")
@@ -50,6 +50,6 @@ def test_form_calculator():
         result = calculator_page.get_result()
 
     with allure.step("Проверка результата"):
-        assert result == 10, "Результат сложения неверный"  
+        assert result == 15, "Результат сложения неверный"  
 
     calculator_page.close_driver()
