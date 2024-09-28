@@ -4,8 +4,8 @@ from faker import Faker
 from CompanyApi import CompanyApi
 from CompanyTable import CompanyTable
 
-api = CompanyApi("https://x-clients-be.onrender.com")
-db = CompanyTable("postgresql://x_clients_db_3fmx_user:mzoTw2Vp4Ox4NQH0XKN3KumdyAYE31uq@dpg-cour99g21fec73bsgvug-a.oregon-postgres.render.com/x_clients_db_3fmx")
+api = CompanyApi("https://x-clients-be.onrender.com/docs/")
+db = CompanyTable("postgresql://x_clients_user:ypYaT7FBULZv2VxrJuOHVoe78MEElWlb@dpg-crgp14o8fa8c73aritj0-a.frankfurt-postgres.render.com/x_clients_db_75hr")
 
 fake = Faker("ru_RU")
 
