@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 
 from webdriver_manager.chrome import ChromeDriverManager
 
-from Class.Personal import PersonalDataPage
+from Class.PersonalData import PersonalDataPage
 
 @allure.id("PersonalData")
 @allure.epic("Персональные данные")
@@ -21,7 +21,7 @@ def test_form_elements():
     with allure.step("Создание переменной, которая хранит экзампляр класса PersonalDataPage"):
         personal_data_page = PersonalDataPage(driver)
 
-    personal_data_page.personal_data("Artem", "Vologdin", "Ugdanskay, -40", "test@skypro.com", "+79999999999", "Chita", "Russia", "QA", "SkyPro")
+    personal_data_page.personal_data("Иван", "Петров", "Ленина, 55-3", "test@skypro.com", "+7985899998787", "Москва", "Россия", "QA", "SkyPro")
     personal_data_page.zip_code_red()
     personal_data_page.other_fields_green()
     personal_data_page.close_driver()
