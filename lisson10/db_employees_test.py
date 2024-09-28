@@ -4,7 +4,7 @@ from faker import Faker
 from EmployeesApi import EmployeesApi
 from EmployeesTable import EmployeesTable
 
-api = EmployeesApi("https://x-clients-be.onrender.com")
+api = EmployeesApi("https://x-clients-be.onrender.com/docs-json")
 db = EmployeesTable("postgresql://x_clients_user:ypYaT7FBULZv2VxrJuOHVoe78MEElWlb@dpg-crgp14o8fa8c73aritj0-a.frankfurt-postgres.render.com/x_clients_db_75hr")
 
 fake = Faker("ru_RU")
