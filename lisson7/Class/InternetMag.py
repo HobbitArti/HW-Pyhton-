@@ -23,9 +23,7 @@ class InternetMagPage:
         self.driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-backpack").click()
         self.driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-bolt-t-shirt").click()
         self.driver.find_element(By.CSS_SELECTOR, "#add-to-cart-sauce-labs-onesie").click()
-        counter = 'Total: $58.29'
-        return counter
-
+ 
     @allure.step("Перейти в корзину интернет-магазина")
     def go_to_cart(self):
         self.driver.find_element(By.CSS_SELECTOR, 'a[data-test="shopping-cart-link"]').click()
@@ -48,3 +46,15 @@ class InternetMagPage:
     def close(self):
         self.driver.find_element(By.CSS_SELECTOR, "#finish").click()
         self.driver.quit()
+
+    def calculate_expected_total(self):
+        """
+        Calculates the expected total cost based on the prices of added products.
+        This method assumes the prices are displayed correctly on the product page.
+        """
+        product_prices = self.driver.find_elements(By.CSS_SELECTOR, ".inventory_item .pricebar")
+        total_cost = 0.0
+        for price_element in product_prices:
+            price_str = price_element.text.strip("$")  # Remove dollar sign and whitespace
+            total_cost += float(price_str)
+        return total_cost

@@ -25,3 +25,11 @@ def test_form_elements():
     personal_data_page.zip_code_red()
     personal_data_page.other_fields_green()
     personal_data_page.close_driver()
+    
+    # Утверждения для проверки ожидаемого поведения
+    assert personal_data_page.zip_code_red(), "Поле Zip code не подсвечено красным"
+    assert personal_data_page.other_fields_green(), "Не все остальные поля подсвечены зеленым"
+
+    # Дополнительные утверждения для других проверок достоверности (при необходимости)
+    assert personal_data_page.is_email_required(), "Поле email не помечено как обязательное"
+    assert personal_data_page.is_city_required(), "Поле city не помечено как обязательное"
